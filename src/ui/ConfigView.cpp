@@ -122,7 +122,7 @@ void ConfigView::fromGlobals(){
 	bufferSizeSelect->selected = ofToString( globals.bufferSize );
 	numbuffersSelect->selected = ofToString( globals.numBuffers );
 
-	if( globals.deviceId < soundcardButtons.size() ){
+	if( globals.deviceId < (intptr_t)soundcardButtons.size() ){
 		selectSoundCard( globals.deviceId );
 	}
 	else{
@@ -165,18 +165,18 @@ void ConfigView::buttonPressed( const void * sender, ofTouchEventArgs & args ){
 	}
 	else{
 		mui::ToggleButton * btn = (mui::ToggleButton*)sender;
-		selectSoundCard((int)btn->userData);
+		selectSoundCard((intptr_t)btn->userData);
 	}
 }
 
 void ConfigView::selectSoundCard( int deviceId ){
-	if( deviceId < 0 && soundcardButtons.size() > 0 ){
-		deviceId = (int)soundcardButtons.front()->userData;
+	if( deviceId < 0 && (intptr_t)soundcardButtons.size() > 0 ){
+		deviceId = (intptr_t)soundcardButtons.front()->userData;
 	}
 	
-	for( int i = 0; i < soundcardButtons.size(); i++ ){
+	for( intptr_t i = 0; i < (intptr_t)soundcardButtons.size(); i++ ){
 		mui::ToggleButton * btn = soundcardButtons[i];
-		if( (int)btn->userData == deviceId ){
+		if( (signed intptr_t)btn->userData == deviceId ){
 			selectedSoundCard = deviceId;
 			btn->selected = true;
 		}
@@ -193,7 +193,7 @@ void ConfigView::autoDetect(){
 	int bufferSize = 512;
 	int numBuffers = 4;
 	getDefaultRtOutputParams(deviceId, sampleRate, bufferSize, numBuffers);
-	if( deviceId < soundcardButtons.size() ) selectSoundCard(deviceId);
+	if( (size_t)deviceId < (size_t)soundcardButtons.size() ) selectSoundCard(deviceId);
 	sampleRatesSelect->selected = ofToString(sampleRate);
 	sampleRatesSelect->commit();
 	bufferSizeSelect->selected = ofToString(bufferSize);
